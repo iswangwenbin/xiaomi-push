@@ -2,7 +2,6 @@ package xiaomipush
 
 import (
 	"encoding/json"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -97,124 +96,6 @@ func (m *Message) AddExtra(key, value string) *Message {
 
 func (m *Message) JSON() []byte {
 	bytes, err := json.Marshal(m)
-	if err != nil {
-		panic(err)
-	}
-	return bytes
-}
-
-//-----------------------------------------------------------------------------------//
-// 发送给Android设备的Message对象
-func NewAndroidMessage(title, description string) *Message {
-	return &Message{
-		Payload:     "",
-		Title:       title,
-		Description: description,
-		PassThrough: 0,
-		NotifyType:  -1, // default notify type
-		TimeToLive:  0,
-		TimeToSend:  0,
-		NotifyID:    0,
-		Extra:       make(map[string]string),
-	}
-}
-
-// 打开当前app对应的Launcher Activity。
-func (m *Message) SetLauncherActivity() *Message {
-	m.Extra["notify_effect"] = "1"
-	return m
-}
-
-// 打开当前app内的任意一个Activity。
-func (m *Message) SetJumpActivity(value string) *Message {
-	m.Extra["notify_effect"] = "2"
-	m.Extra["intent_uri"] = value
-	return m
-}
-
-// 打开网页
-func (m *Message) SetJumpWebURL(value string) *Message {
-	m.Extra["notify_effect"] = "3"
-	m.Extra["web_uri"] = value
-	return m
-}
-
-func (m *Message) SetPayload(payload string) *Message {
-	m.Payload = payload
-	return m
-}
-
-//-----------------------------------------------------------------------------------//
-// 发送给IOS设备的Message对象
-func NewIOSMessage(description string) *Message {
-	return &Message{
-		Payload:     "",
-		Title:       "",
-		Description: description,
-		PassThrough: 0,
-		NotifyType:  -1, // default notify type
-		TimeToLive:  0,
-		TimeToSend:  0,
-		NotifyID:    0,
-		Extra:       make(map[string]string),
-	}
-}
-
-// 可选项，自定义通知数字角标。
-func (i *Message) SetBadge(badge int64) *Message {
-	i.Extra["badge"] = strconv.FormatInt(badge, 10)
-	return i
-}
-
-// 可选项，iOS8推送消息快速回复类别。
-func (i *Message) SetCategory(category string) *Message {
-	i.Extra["category"] = category
-	return i
-}
-
-// 可选项，自定义消息铃声。
-func (i *Message) SetSoundURL(soundURL string) *Message {
-	i.Extra["sound_url"] = soundURL
-	return i
-}
-
-//-----------------------------------------------------------------------------------//
-// TargetedMessage封装了MiPush推送服务系统中的消息Message对象，和该Message对象所要发送到的目标。
-
-type TargetType int32
-
-const (
-	TargetTypeRegID   TargetType = 1
-	TargetTypeReAlias TargetType = 2
-	TargetTypeAccount TargetType = 3
-)
-
-type TargetedMessage struct {
-	message    *Message
-	targetType TargetType
-	target     string
-}
-
-func NewTargetedMessage(m *Message, target string, targetType TargetType) *TargetedMessage {
-	return &TargetedMessage{
-		message:    m,
-		targetType: targetType,
-		target:     target,
-	}
-}
-
-func (tm *TargetedMessage) SetTargetType(targetType TargetType) *TargetedMessage {
-	tm.targetType = targetType
-	return tm
-}
-
-func (tm *TargetedMessage) SetTarget(target string) *TargetedMessage {
-	tm.target = target
-	return tm
-}
-
-func (tm *TargetedMessage) JSON() []byte {
-	bytes, err := json.Marshal(tm)
 	if err != nil {
 		panic(err)
 	}

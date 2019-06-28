@@ -1,30 +1,46 @@
 package xiaomipush
 
 import (
-	"testing"
-	"time"
-
 	"golang.org/x/net/context"
+	"testing"
 )
 
-var packageName string = "sbkssbkssbkssbkssbkssbkssbkssbks"
+var (
+	packageName        = "******"
+	appSecret          = "******"
+	title              = "标题-通知栏消息"
+	description        = "通知栏消息描述"
+	payload            = "payload"
+	channelId          = "3"
+	channelName        = "实时通知"
+	channelDescription = "实时通知"
+	jumpActivity       = "intent:#Intent;component=cn.wemind.assistant.android/.discover.message.activity.MsgSystemListActivity;S.detailUrl=https%3A%2F%2Fwemind.cn;end"
 
-var client = NewClient("sbkssbkssbkssbkssbkssbkssbkssbks", []string{packageName})
+	regID1   = "WFioJi0fiIco7vOrI4dnxxjeKAUqR7fjugoGkHUgxeo="
+	regID2   = "52Pe7fPIRXWsXhzn4eYJ1njYhBhN8Lcp8IJPOMjThdk="
+	alias1   = "alias1"
+	alias2   = "alias2"
+	account1 = "35510"
+	account2 = "25029"
+	topic1   = "topic1"
+	topic2   = "topic2"
+)
 
-var msg1 *Message = NewAndroidMessage("hi baby1", "hi1").SetPayload("开心么1").SetPassThrough(0)
-var msg2 *Message = NewAndroidMessage("hi baby2", "hi2 ").SetPayload("开心么2").SetPassThrough(1)
+var msg1 = NewAndroidMessage(title, description).SetPayload(payload).SetPassThrough(0).SetChannel(channelId, channelName, channelDescription).SetJumpActivity(jumpActivity)
 
-var regID1 string = "WFioJi0fiIco7vOrI4dnxxjeKAUqR7fjugoGkHUgxeo="
-var regID2 string = "52Pe7fPIRXWsXhzn4eYJ1njYhBhN8Lcp8IJPOMjThdk="
+var msg2 = NewAndroidMessage(title, description).SetPayload(payload).SetPassThrough(1)
 
-var alias1 string = "alias1"
-var alias2 string = "alias2"
+var client = NewClient(appSecret, []string{packageName})
 
-var account1 string = "account1"
-var account2 string = "account2"
+func TestMiPush_SendToUserAccount(t *testing.T) {
+	result, err := client.SendToUserAccount(context.TODO(), msg1, account1)
+	if err != nil {
+		t.Errorf("TestMiPush_SendToUserAccount failed :%v\n", err)
+	}
+	t.Logf("result=%#v\n", result)
+}
 
-var topic1 string = "topic1"
-var topic2 string = "topic2"
+/*
 
 func TestMiPush_Send(t *testing.T) {
 	result, err := client.Send(context.Background(), msg1, regID1)
@@ -33,6 +49,7 @@ func TestMiPush_Send(t *testing.T) {
 	}
 	t.Logf("result=%#v\n", result)
 }
+
 
 func TestMiPush_SendWithTimeout(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), time.Second)
@@ -89,13 +106,7 @@ func TestMiPush_SendToAliasList(t *testing.T) {
 	t.Logf("result=%#v\n", result)
 }
 
-func TestMiPush_SendToUserAccount(t *testing.T) {
-	result, err := client.SendToUserAccount(context.TODO(), msg1, account1)
-	if err != nil {
-		t.Errorf("TestMiPush_SendToUserAccount failed :%v\n", err)
-	}
-	t.Logf("result=%#v\n", result)
-}
+
 
 func TestMiPush_SendToUserAccountList(t *testing.T) {
 	result, err := client.SendToUserAccountList(context.TODO(), msg1, []string{account1, account2})
@@ -178,7 +189,7 @@ func TestMiPush_GetMessageStatusByJobKey(t *testing.T) {
 }
 
 func TestMiPush_GetMessageStatusPeriod(t *testing.T) {
-	result, err := client.GetMessageStatusPeriod(context.TODO(), time.Now().Add(-time.Hour*24).Unix()*1000, time.Now().Unix()*1000)
+	result, err := client.GetMessageStatusPeriod(context.TODO(), time.Now().Add(-time.Hour * 24).Unix()*1000, time.Now().Unix()*1000)
 	if err != nil {
 		t.Errorf("TestMiPush_GetMessageStatusPeriod failed :%v\n", err)
 	}
@@ -262,3 +273,6 @@ func TestMiPush_GetTopicsOfRegID(t *testing.T) {
 	}
 	t.Logf("result=%#v\n", result)
 }
+
+
+*/

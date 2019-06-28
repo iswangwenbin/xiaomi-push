@@ -15,9 +15,9 @@ import (
 )
 
 type MiPush struct {
-	packageName []string
 	host        string
-	appSecret   string
+	packageName []string // package name
+	appSecret   string   // app secret
 }
 
 func NewClient(appSecret string, packageName []string) *MiPush {
@@ -29,6 +29,7 @@ func NewClient(appSecret string, packageName []string) *MiPush {
 }
 
 //----------------------------------------Sender----------------------------------------//
+
 // 根据registrationId，发送消息到指定设备上
 func (m *MiPush) Send(ctx context.Context, msg *Message, regID string) (*SendResult, error) {
 	params := m.assembleSendParams(msg, regID)
@@ -110,21 +111,6 @@ func (m *MiPush) SendToAliasList(ctx context.Context, msg *Message, aliasList []
 		panic("wrong number aliasList")
 	}
 	return m.SendToAlias(ctx, msg, strings.Join(aliasList, ","))
-}
-
-// 根据account，发送消息到指定account上
-func (m *MiPush) SendToUserAccount(ctx context.Context, msg *Message, userAccount string) (*SendResult, error) {
-	params := m.assembleSendToUserAccountParams(msg, userAccount)
-	bytes, err := m.doPost(ctx, m.host+MessageUserAccountURL, params)
-	if err != nil {
-		return nil, err
-	}
-	var result SendResult
-	err = json.Unmarshal(bytes, &result)
-	if err != nil {
-		return nil, err
-	}
-	return &result, nil
 }
 
 // 根据accountList，发送消息到指定的一组设备上
