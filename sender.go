@@ -1,8 +1,8 @@
 package xiaomipush
 
 import (
+	"context"
 	"encoding/json"
-	"golang.org/x/net/context"
 )
 
 // 根据account，发送消息到指定account上

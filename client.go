@@ -9,8 +9,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-
-	"golang.org/x/net/context"
+	"context"
 	"golang.org/x/net/context/ctxhttp"
 )
 
