@@ -7,11 +7,10 @@ Production ready, full golang implementation of Xiaomi Push API (http://dev.xiao
 var client = xiaomipush.NewClient("yourappSecret", []string{"packageName"})
 
 func main() {
-    var msg1 *Message = xiaomipush.NewAndroidMessage("title", "body").SetPayload("this is payload1")
-
-    client.Send(context.Background(), msg1, regID1)
+    var msg = xiaomipush.NewAndroidMessage("title", "body").SetPayload("this is payload").AddExtra("channel_id", "1")
+    client.Send(context.Background(), msg, "regId")
+    client.SendToUserAccount(context.Background(), msg, "userAccount")
 }
-
 ```
 
 ### Sender APIs
